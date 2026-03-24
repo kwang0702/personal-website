@@ -1,65 +1,131 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const sections = [
+  {
+    title: "Photography",
+    description: "Moments captured through the lens — street, portrait, and landscape.",
+    href: "/photography",
+    accent: "royal-green",
+    accentBorder: "border-royal-green/20",
+    accentText: "text-royal-green",
+    accentHover: "group-hover:bg-royal-green",
+  },
+  {
+    title: "Videos",
+    description: "Moving images — short films, edits, and visual experiments.",
+    href: "/videos",
+    accent: "burgundy",
+    accentBorder: "border-burgundy/20",
+    accentText: "text-burgundy",
+    accentHover: "group-hover:bg-burgundy",
+  },
+  {
+    title: "Movie Reviews",
+    description: "Thoughts on cinema — what I watched, what stayed with me.",
+    href: "/reviews",
+    accent: "purple",
+    accentBorder: "border-purple/20",
+    accentText: "text-purple",
+    accentHover: "group-hover:bg-purple",
+  },
+  {
+    title: "Music",
+    description: "What I listen to — playlists, albums, and sonic textures.",
+    href: "/music",
+    accent: "royal-green",
+    accentBorder: "border-royal-green/20",
+    accentText: "text-royal-green",
+    accentHover: "group-hover:bg-royal-green",
+  },
+  {
+    title: "Fits",
+    description: "Personal style documented — outfits and wardrobe notes.",
+    href: "/fits",
+    accent: "burgundy",
+    accentBorder: "border-burgundy/20",
+    accentText: "text-burgundy",
+    accentHover: "group-hover:bg-burgundy",
+  },
+  {
+    title: "Projects",
+    description: "Things I've built — code, tools, and technical explorations.",
+    href: "/projects",
+    accent: "purple",
+    accentBorder: "border-purple/20",
+    accentText: "text-purple",
+    accentHover: "group-hover:bg-purple",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="flex flex-1 flex-col">
+      {/* Hero */}
+      <section className="mx-auto flex w-full max-w-6xl flex-col justify-center px-6 pt-32 pb-20">
+        <p className="mb-4 text-sm font-medium tracking-widest text-warm-gray uppercase">
+          Personal Archive
+        </p>
+        <h1 className="max-w-2xl font-serif text-5xl font-light leading-tight tracking-tight text-charcoal sm:text-6xl lg:text-7xl">
+          A quiet place for
+          <br />
+          <span className="text-royal-green">things I care about.</span>
+        </h1>
+        <p className="mt-6 max-w-lg text-lg leading-relaxed text-charcoal-light">
+          Photography, film, music, style, and code — collected in one place.
+          Not for sale, just for keeping.
+        </p>
+      </section>
+
+      {/* Divider */}
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <hr className="border-charcoal/8" />
+      </div>
+
+      {/* Sections grid */}
+      <section className="mx-auto w-full max-w-6xl px-6 py-20">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {sections.map((section) => (
+            <Link
+              key={section.href}
+              href={section.href}
+              className={`group flex flex-col justify-between rounded-sm border ${section.accentBorder} bg-cream-dark/50 p-8 transition-all duration-300 hover:bg-cream-dark`}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <div>
+                {/* Accent bar */}
+                <div
+                  className={`mb-6 h-px w-8 bg-charcoal/15 transition-all duration-300 ${section.accentHover}`}
+                />
+                <h2
+                  className={`font-serif text-2xl font-medium tracking-tight text-charcoal transition-colors duration-300 group-hover:${section.accentText}`}
+                >
+                  {section.title}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-warm-gray">
+                  {section.description}
+                </p>
+              </div>
+              <div className="mt-8 flex items-center gap-2">
+                <span className={`text-xs font-medium tracking-wide ${section.accentText}`}>
+                  Explore
+                </span>
+                <span
+                  className={`text-xs ${section.accentText} transition-transform duration-300 group-hover:translate-x-1`}
+                >
+                  →
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto border-t border-charcoal/5 bg-cream-dark/30">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
+          <p className="font-serif text-sm text-warm-gray">K. Wang</p>
+          <p className="text-xs text-warm-gray/60">A personal collection.</p>
         </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }
