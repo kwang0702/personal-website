@@ -10,6 +10,8 @@ const navItems = [
   { label: "Music", href: "/music" },
   { label: "Fits", href: "/fits" },
   { label: "Projects", href: "/projects" },
+  { label: "Culinary", href: "/culinary" },
+  { label: "Arts", href: "/arts" },
 ];
 
 export default function Header() {

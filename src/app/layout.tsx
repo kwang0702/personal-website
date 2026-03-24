@@ -22,7 +22,7 @@ const cormorant = Cormorant({
 
 export const metadata: Metadata = {
   title: "K. Wang",
-  description: "Photography, film, music, style, and code.",
+  description: "Photography, film, music, style, cooking, art, and code.",
 };
 
 export default function RootLayout({

@@ -55,6 +55,24 @@ const sections = [
     accentText: "text-purple",
     accentHover: "group-hover:bg-purple",
   },
+  {
+    title: "Culinary",
+    description: "Dishes I make — recipes, plating, and kitchen experiments.",
+    href: "/culinary",
+    accent: "burgundy",
+    accentBorder: "border-burgundy/20",
+    accentText: "text-burgundy",
+    accentHover: "group-hover:bg-burgundy",
+  },
+  {
+    title: "Arts",
+    description: "Paintings, sketches, and visual work by hand.",
+    href: "/arts",
+    accent: "royal-green",
+    accentBorder: "border-royal-green/20",
+    accentText: "text-royal-green",
+    accentHover: "group-hover:bg-royal-green",
+  },
 ];
 
 export default function Home() {
@@ -71,8 +89,8 @@ export default function Home() {
           <span className="text-royal-green">things I care about.</span>
         </h1>
         <p className="mt-6 max-w-lg text-lg leading-relaxed text-charcoal-light">
-          Photography, film, music, style, and code — collected in one place.
-          Not for sale, just for keeping.
+          Photography, film, music, style, cooking, art, and code — collected
+          in one place. Not for sale, just for keeping.
         </p>
       </section>
 
