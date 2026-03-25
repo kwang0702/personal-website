@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "pub-41c1a9c640bf4a13820a7650a5f1a9f1.r2.dev",
       },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+      },
     ],
   },
 };

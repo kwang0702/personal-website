@@ -147,12 +147,12 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           >
             <div className="relative overflow-hidden bg-cream-dark">
               <Image
-                src={photo.src}
+                src={photo.thumb}
                 alt={photo.alt}
-                width={photo.orientation === "horizontal" ? 1400 : 900}
-                height={photo.orientation === "horizontal" ? 930 : 1400}
+                width={photo.orientation === "horizontal" ? 1200 : 800}
+                height={photo.orientation === "horizontal" ? 800 : 1200}
                 className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                quality={90}
+                unoptimized
                 loading={i < 4 ? "eager" : "lazy"}
                 sizes="(max-width: 640px) 100vw, 50vw"
               />

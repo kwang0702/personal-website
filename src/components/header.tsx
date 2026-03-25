@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import AdminLogin from "@/components/admin-login";
 
 const navItems = [
   { label: "Photography", href: "/photography" },
@@ -20,13 +21,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-cream/80 backdrop-blur-md border-b border-charcoal/5">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        {/* Logo / Name */}
-        <Link
-          href="/"
-          className="font-serif text-2xl font-semibold tracking-tight text-charcoal transition-colors hover:text-royal-green"
-        >
-          K. Wang
-        </Link>
+        {/* Logo / Name — double-click to open admin login */}
+        <AdminLogin />
 
         {/* Desktop nav */}
         <ul className="hidden items-center gap-8 md:flex">
