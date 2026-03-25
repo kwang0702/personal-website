@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
     imageSizes: [256, 384, 512, 768, 1024],
     formats: ["image/avif", "image/webp"],
     qualities: [75, 85, 90, 95],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "pub-41c1a9c640bf4a13820a7650a5f1a9f1.r2.dev",
+      },
+    ],
   },
 };
 
