@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { useLanguage } from "@/components/language-provider";
 import type { Photo } from "@/data/photos";
 
 function Lightbox({
@@ -9,12 +10,23 @@ function Lightbox({
   onClose,
   onPrev,
   onNext,
+  ariaClose,
+  ariaPrev,
+  ariaNext,
+  isAdmin,
+  onDelete,
 }: {
   photo: Photo;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  ariaClose: string;
+  ariaPrev: string;
+  ariaNext: string;
+  isAdmin?: boolean;
+  onDelete?: () => void;
 }) {
+  const { t } = useLanguage();
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -42,18 +54,28 @@ function Lightbox({
       <button
         onClick={onClose}
         className="absolute top-6 right-6 z-10 text-cream/60 transition-colors hover:text-cream"
-        aria-label="Close"
+        aria-label={ariaClose}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M18 6L6 18M6 6l12 12" />
         </svg>
       </button>
 
+      {/* Admin delete */}
+      {isAdmin && onDelete && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          className="absolute top-6 left-6 z-10 rounded-sm bg-burgundy/80 px-3 py-1.5 text-xs font-medium text-cream transition-colors hover:bg-burgundy"
+        >
+          {t("common.remove")}
+        </button>
+      )}
+
       {/* Prev */}
       <button
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
         className="absolute left-4 z-10 rounded-full p-2 text-cream/40 transition-colors hover:text-cream sm:left-8"
-        aria-label="Previous photo"
+        aria-label={ariaPrev}
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M15 18l-6-6 6-6" />
@@ -64,7 +86,7 @@ function Lightbox({
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}
         className="absolute right-4 z-10 rounded-full p-2 text-cream/40 transition-colors hover:text-cream sm:right-8"
-        aria-label="Next photo"
+        aria-label={ariaNext}
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M9 18l6-6-6-6" />
@@ -94,7 +116,18 @@ function Lightbox({
   );
 }
 
-export default function PhotoGrid({ photos }: { photos: Photo[] }) {
+export default function PhotoGrid({
+  photos,
+  isAdmin,
+  token,
+  onDeleted,
+}: {
+  photos: Photo[];
+  isAdmin?: boolean;
+  token?: string | null;
+  onDeleted?: (id: string) => void;
+}) {
+  const { t } = useLanguage();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>("all");
 
@@ -115,6 +148,25 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   const handleNext = useCallback(() => {
     setSelectedIdx((i) => (i !== null && i < filtered.length - 1 ? i + 1 : 0));
   }, [filtered.length]);
+
+  const handleDelete = useCallback(async () => {
+    if (!selected || !token || !onDeleted) return;
+    if (!confirm(t("photography.confirm_remove"))) return;
+
+    const res = await fetch("/api/photos", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id: selected.id }),
+    });
+
+    if (res.ok) {
+      onDeleted(selected.id);
+      setSelectedIdx(null);
+    }
+  }, [selected, token, onDeleted, t]);
 
   return (
     <>
@@ -141,7 +193,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
       <div className="columns-1 gap-5 sm:columns-2">
         {filtered.map((photo, i) => (
           <button
-            key={photo.src}
+            key={photo.id}
             onClick={() => setSelectedIdx(i)}
             className="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-sm focus:outline-none"
           >
@@ -165,7 +217,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
       {/* Empty state */}
       {filtered.length === 0 && (
         <p className="py-20 text-center text-sm text-warm-gray">
-          No photos yet.
+          {t("common.no_photos")}
         </p>
       )}
 
@@ -176,6 +228,11 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           onClose={() => setSelectedIdx(null)}
           onPrev={handlePrev}
           onNext={handleNext}
+          ariaClose={t("a11y.close")}
+          ariaPrev={t("a11y.prev_photo")}
+          ariaNext={t("a11y.next_photo")}
+          isAdmin={isAdmin}
+          onDelete={handleDelete}
         />
       )}
     </>

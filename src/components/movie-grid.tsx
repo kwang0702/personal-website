@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import type { Movie } from "@/data/movies";
 import { useAdmin } from "@/components/admin-provider";
+import { useLanguage } from "@/components/language-provider";
 import MovieModal from "@/components/movie-modal";
 import MovieSearch from "@/components/movie-search";
 
@@ -45,6 +46,7 @@ function MovieCard({ movie, onClick, priority }: { movie: Movie; onClick: () => 
 
 export default function MovieGrid({ initialMovies }: { initialMovies: Movie[] }) {
   const { isAdmin } = useAdmin();
+  const { t } = useLanguage();
   const [movies, setMovies] = useState<Movie[]>(initialMovies);
   const [selected, setSelected] = useState<Movie | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -90,11 +92,11 @@ export default function MovieGrid({ initialMovies }: { initialMovies: Movie[] })
         </div>
       ) : loaded ? (
         <p className="py-20 text-center text-sm text-warm-gray">
-          No movies yet.
+          {t("common.no_movies")}
         </p>
       ) : (
         <p className="py-20 text-center text-sm text-warm-gray">
-          Loading...
+          {t("common.loading")}
         </p>
       )}
 

@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useAdmin } from "@/components/admin-provider";
+import { useLanguage } from "@/components/language-provider";
 
 export default function AdminLogin() {
   const { isAdmin, login, logout } = useAdmin();
+  const { t } = useLanguage();
   const [showPrompt, setShowPrompt] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -41,7 +43,7 @@ export default function AdminLogin() {
         K. Wang
         {isAdmin && (
           <span className="ml-2 align-middle text-[10px] font-sans font-medium tracking-wide text-royal-green/50">
-            admin
+            {t("admin.badge")}
           </span>
         )}
       </Link>
@@ -56,25 +58,25 @@ export default function AdminLogin() {
             onClick={(e) => e.stopPropagation()}
             className="flex flex-col gap-3 rounded-sm bg-cream p-6 shadow-xl w-72"
           >
-            <p className="font-serif text-sm font-medium text-charcoal">Admin Login</p>
+            <p className="font-serif text-sm font-medium text-charcoal">{t("admin.login_title")}</p>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder={t("admin.password_placeholder")}
               className={`rounded-sm border px-3 py-2 text-sm bg-transparent focus:outline-none focus:border-royal-green ${
                 error ? "border-burgundy" : "border-charcoal/15"
               }`}
               autoFocus
             />
             {error && (
-              <p className="text-xs text-burgundy">Incorrect password.</p>
+              <p className="text-xs text-burgundy">{t("admin.wrong_password")}</p>
             )}
             <button
               type="submit"
               className="rounded-sm bg-royal-green px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-royal-green/90"
             >
-              Login
+              {t("admin.login_button")}
             </button>
           </form>
         </div>

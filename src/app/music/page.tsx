@@ -1,25 +1,23 @@
+"use client";
+
 import AlbumGrid from "@/components/album-grid";
-
-export const metadata = {
-  title: "Music — K. Wang",
-  description: "Albums and sounds that shape my taste.",
-};
-
-export const dynamic = "force-dynamic";
+import { useLanguage } from "@/components/language-provider";
 
 export default function MusicPage() {
+  const { t } = useLanguage();
+
   return (
     <main className="flex flex-1 flex-col">
       {/* Page header */}
       <section className="mx-auto w-full max-w-6xl px-6 pt-24 pb-12">
         <p className="mb-4 text-sm font-medium tracking-widest text-burgundy uppercase">
-          Music
+          {t("music.label")}
         </p>
         <h1 className="max-w-xl font-serif text-4xl font-light leading-tight tracking-tight text-charcoal sm:text-5xl">
-          What I listen to.
+          {t("music.heading")}
         </h1>
         <p className="mt-4 max-w-md text-base leading-relaxed text-charcoal-light">
-          Albums that defined a moment, a mood, or just stayed on repeat.
+          {t("music.description")}
         </p>
       </section>
 
@@ -35,8 +33,8 @@ export default function MusicPage() {
       {/* Footer */}
       <footer className="mt-auto border-t border-charcoal/5 bg-cream-dark/30">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
-          <p className="font-serif text-sm text-burgundy/60">K. Wang</p>
-          <p className="text-xs text-warm-gray/60">A personal collection.</p>
+          <p className="font-serif text-sm text-burgundy/60">{t("home.footer.name")}</p>
+          <p className="text-xs text-warm-gray/60">{t("home.footer.tagline")}</p>
         </div>
       </footer>
     </main>

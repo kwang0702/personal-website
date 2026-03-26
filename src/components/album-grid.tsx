@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { useAdmin } from "@/components/admin-provider";
 import { useMusicPlayer } from "@/components/music-player-provider";
+import { useLanguage } from "@/components/language-provider";
 import type { Album } from "@/data/albums";
 import AlbumSearch from "@/components/album-search";
 
@@ -11,10 +12,12 @@ function AlbumCard({
   album,
   onClick,
   priority,
+  singleLabel,
 }: {
   album: Album;
   onClick: () => void;
   priority?: boolean;
+  singleLabel: string;
 }) {
   return (
     <button onClick={onClick} className="group flex flex-col text-left focus:outline-none">
@@ -41,7 +44,7 @@ function AlbumCard({
         {album.title}
       </h3>
       <p className="mt-0.5 text-xs text-warm-gray">
-        {album.artist}{album.type === "track" ? <span className="text-burgundy/70"> · Single</span> : ""}
+        {album.artist}{album.type === "track" ? <span className="text-burgundy/70"> · {singleLabel}</span> : ""}
       </p>
     </button>
   );
@@ -50,6 +53,7 @@ function AlbumCard({
 export default function AlbumGrid() {
   const { isAdmin } = useAdmin();
   const { openModal } = useMusicPlayer();
+  const { t } = useLanguage();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -80,16 +84,17 @@ export default function AlbumGrid() {
               album={album}
               onClick={() => openModal(album)}
               priority={i < 5}
+              singleLabel={t("music.single")}
             />
           ))}
         </div>
       ) : loaded ? (
         <p className="py-20 text-center text-sm text-warm-gray">
-          No albums yet.
+          {t("common.no_albums")}
         </p>
       ) : (
         <p className="py-20 text-center text-sm text-warm-gray">
-          Loading...
+          {t("common.loading")}
         </p>
       )}
     </>

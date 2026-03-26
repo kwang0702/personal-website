@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useCallback } from "react";
 import { useAdmin } from "@/components/admin-provider";
+import { useLanguage } from "@/components/language-provider";
 import type { Album } from "@/data/albums";
 
 export default function AlbumSearch({
@@ -11,6 +12,7 @@ export default function AlbumSearch({
   onAdded: (album: Album) => void;
 }) {
   const { token } = useAdmin();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Album[]>([]);
   const [searching, setSearching] = useState(false);
@@ -67,7 +69,7 @@ export default function AlbumSearch({
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M12 5v14M5 12h14" />
         </svg>
-        Add Album / Song
+        {t("music.add_button")}
       </button>
     );
   }
@@ -76,7 +78,7 @@ export default function AlbumSearch({
     <div className="rounded-sm border border-charcoal/10 bg-cream-dark/30 p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-serif text-lg font-medium text-charcoal">
-          Search Albums & Songs
+          {t("music.search_title")}
         </h3>
         <button
           onClick={() => { setOpen(false); setQuery(""); setResults([]); }}
@@ -94,7 +96,7 @@ export default function AlbumSearch({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Search by album name or artist..."
+          placeholder={t("music.search_placeholder")}
           className="flex-1 rounded-sm border border-charcoal/10 bg-cream px-3 py-2 text-sm text-charcoal placeholder:text-warm-gray/50 focus:border-royal-green/30 focus:outline-none"
           autoFocus
         />
@@ -103,7 +105,7 @@ export default function AlbumSearch({
           disabled={searching || !query.trim()}
           className="rounded-sm bg-royal-green px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-royal-green/90 disabled:opacity-50"
         >
-          {searching ? "Searching..." : "Search"}
+          {searching ? t("common.searching") : t("common.search")}
         </button>
       </div>
 
@@ -129,7 +131,7 @@ export default function AlbumSearch({
                     {album.title}
                   </p>
                   <span className="shrink-0 rounded-full bg-charcoal/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-warm-gray">
-                    {album.type === "track" ? "Song" : "Album"}
+                    {album.type === "track" ? t("music.type_song") : t("music.type_album")}
                   </span>
                 </div>
                 <p className="text-xs text-warm-gray">
@@ -141,7 +143,7 @@ export default function AlbumSearch({
                 disabled={adding === album.spotifyId}
                 className="shrink-0 rounded-sm bg-royal-green/10 px-3 py-1.5 text-xs font-medium text-royal-green transition-colors hover:bg-royal-green/20 disabled:opacity-50"
               >
-                {adding === album.spotifyId ? "Adding..." : "Add"}
+                {adding === album.spotifyId ? t("common.adding") : t("common.add")}
               </button>
             </div>
           ))}
@@ -150,7 +152,7 @@ export default function AlbumSearch({
 
       {!searching && results.length === 0 && query && (
         <p className="mt-4 text-center text-xs text-warm-gray/60">
-          No results. Try a different search.
+          {t("music.no_results")}
         </p>
       )}
     </div>

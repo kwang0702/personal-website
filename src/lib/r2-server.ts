@@ -1,6 +1,7 @@
-import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import type { Movie } from "@/data/movies";
 import type { Album } from "@/data/albums";
+import type { Photo } from "@/data/photos";
 
 const R2 = new S3Client({
   region: "auto",
@@ -84,5 +85,61 @@ export async function putMusicCatalog(albums: Album[]): Promise<void> {
       Body: JSON.stringify(albums, null, 2),
       ContentType: "application/json",
     })
+  );
+}
+
+// --- Photo Catalog ---
+
+export async function getPhotoCatalog(): Promise<Photo[]> {
+  try {
+    const res = await R2.send(
+      new GetObjectCommand({ Bucket: BUCKET, Key: "photography/catalog.json" })
+    );
+    const text = await res.Body?.transformToString();
+    return text ? JSON.parse(text) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function putPhotoCatalog(photos: Photo[]): Promise<void> {
+  await R2.send(
+    new PutObjectCommand({
+      Bucket: BUCKET,
+      Key: "photography/catalog.json",
+      Body: JSON.stringify(photos, null, 2),
+      ContentType: "application/json",
+    })
+  );
+}
+
+// --- Binary Download / Upload / Delete ---
+
+export async function downloadFromR2(key: string): Promise<Buffer | null> {
+  try {
+    const res = await R2.send(
+      new GetObjectCommand({ Bucket: BUCKET, Key: key })
+    );
+    const bytes = await res.Body?.transformToByteArray();
+    return bytes ? Buffer.from(bytes) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function uploadToR2(key: string, body: Buffer, contentType: string): Promise<void> {
+  await R2.send(
+    new PutObjectCommand({
+      Bucket: BUCKET,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    })
+  );
+}
+
+export async function deleteFromR2(key: string): Promise<void> {
+  await R2.send(
+    new DeleteObjectCommand({ Bucket: BUCKET, Key: key })
   );
 }

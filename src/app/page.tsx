@@ -1,74 +1,77 @@
-import Link from "next/link";
+"use client";
 
-const sections = [
+import Link from "next/link";
+import { useLanguage } from "@/components/language-provider";
+import type { TranslationKey } from "@/lib/i18n";
+
+const sections: {
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+  href: string;
+  accentBorder: string;
+  accentText: string;
+  accentHover: string;
+}[] = [
   {
-    title: "Photography",
-    description: "Moments captured through the lens — street, portrait, and landscape.",
+    titleKey: "nav.photography",
+    descKey: "home.section.photography",
     href: "/photography",
-    accent: "royal-green",
     accentBorder: "border-royal-green/20",
     accentText: "text-royal-green",
     accentHover: "group-hover:bg-royal-green",
   },
   {
-    title: "Videos",
-    description: "Moving images — short films, edits, and visual experiments.",
+    titleKey: "nav.videos",
+    descKey: "home.section.videos",
     href: "/videos",
-    accent: "burgundy",
     accentBorder: "border-burgundy/20",
     accentText: "text-burgundy",
     accentHover: "group-hover:bg-burgundy",
   },
   {
-    title: "Movie Reviews",
-    description: "Thoughts on cinema — what I watched, what stayed with me.",
+    titleKey: "nav.reviews",
+    descKey: "home.section.reviews",
     href: "/reviews",
-    accent: "purple",
     accentBorder: "border-purple/20",
     accentText: "text-purple",
     accentHover: "group-hover:bg-purple",
   },
   {
-    title: "Music",
-    description: "What I listen to — playlists, albums, and sonic textures.",
+    titleKey: "nav.music",
+    descKey: "home.section.music",
     href: "/music",
-    accent: "royal-green",
     accentBorder: "border-royal-green/20",
     accentText: "text-royal-green",
     accentHover: "group-hover:bg-royal-green",
   },
   {
-    title: "Fits",
-    description: "Personal style documented — outfits and wardrobe notes.",
+    titleKey: "nav.fits",
+    descKey: "home.section.fits",
     href: "/fits",
-    accent: "burgundy",
     accentBorder: "border-burgundy/20",
     accentText: "text-burgundy",
     accentHover: "group-hover:bg-burgundy",
   },
   {
-    title: "Projects",
-    description: "Things I've built — code, tools, and technical explorations.",
+    titleKey: "nav.projects",
+    descKey: "home.section.projects",
     href: "/projects",
-    accent: "purple",
     accentBorder: "border-purple/20",
     accentText: "text-purple",
     accentHover: "group-hover:bg-purple",
   },
   {
-    title: "Culinary",
-    description: "Dishes I make — recipes, plating, and kitchen experiments.",
+    titleKey: "nav.culinary",
+    descKey: "home.section.culinary",
     href: "/culinary",
-    accent: "burgundy",
     accentBorder: "border-burgundy/20",
     accentText: "text-burgundy",
     accentHover: "group-hover:bg-burgundy",
   },
   {
-    title: "Arts",
-    description: "Paintings, sketches, and visual work by hand.",
+    titleKey: "nav.arts",
+    descKey: "home.section.arts",
     href: "/arts",
-    accent: "royal-green",
     accentBorder: "border-royal-green/20",
     accentText: "text-royal-green",
     accentHover: "group-hover:bg-royal-green",
@@ -76,21 +79,22 @@ const sections = [
 ];
 
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="mx-auto flex w-full max-w-6xl flex-col justify-center px-6 pt-32 pb-20">
         <p className="mb-4 text-sm font-medium tracking-widest text-warm-gray uppercase">
-          Personal Archive
+          {t("home.label")}
         </p>
         <h1 className="max-w-2xl font-serif text-5xl font-light leading-tight tracking-tight text-charcoal sm:text-6xl lg:text-7xl">
-          A quiet place for
+          {t("home.heading1")}
           <br />
-          <span className="text-royal-green">things I care about.</span>
+          <span className="text-royal-green">{t("home.heading2")}</span>
         </h1>
         <p className="mt-6 max-w-lg text-lg leading-relaxed text-charcoal-light">
-          Photography, film, music, style, cooking, art, and code — collected
-          in one place. Not for sale, just for keeping.
+          {t("home.description")}
         </p>
       </section>
 
@@ -116,15 +120,15 @@ export default function Home() {
                 <h2
                   className={`font-serif text-2xl font-medium tracking-tight text-charcoal transition-colors duration-300 group-hover:${section.accentText}`}
                 >
-                  {section.title}
+                  {t(section.titleKey)}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-warm-gray">
-                  {section.description}
+                  {t(section.descKey)}
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-2">
                 <span className={`text-xs font-medium tracking-wide ${section.accentText}`}>
-                  Explore
+                  {t("home.explore")}
                 </span>
                 <span
                   className={`text-xs ${section.accentText} transition-transform duration-300 group-hover:translate-x-1`}
@@ -140,8 +144,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="mt-auto border-t border-charcoal/5 bg-cream-dark/30">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
-          <p className="font-serif text-sm text-warm-gray">K. Wang</p>
-          <p className="text-xs text-warm-gray/60">A personal collection.</p>
+          <p className="font-serif text-sm text-warm-gray">{t("home.footer.name")}</p>
+          <p className="text-xs text-warm-gray/60">{t("home.footer.tagline")}</p>
         </div>
       </footer>
     </main>

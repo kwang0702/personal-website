@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useCallback } from "react";
 import { useAdmin } from "@/components/admin-provider";
+import { useLanguage } from "@/components/language-provider";
 import type { Movie } from "@/data/movies";
 
 export default function MovieSearch({
@@ -11,6 +12,7 @@ export default function MovieSearch({
   onAdded: (movie: Movie) => void;
 }) {
   const { token } = useAdmin();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Movie[]>([]);
   const [searching, setSearching] = useState(false);
@@ -88,7 +90,7 @@ export default function MovieSearch({
         >
           <path d="M12 5v14M5 12h14" />
         </svg>
-        Add Movie
+        {t("movie.add_button")}
       </button>
     );
   }
@@ -98,7 +100,7 @@ export default function MovieSearch({
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-serif text-lg font-medium text-charcoal">
-          Search Movies
+          {t("movie.search_title")}
         </h3>
         <button
           onClick={() => {
@@ -128,7 +130,7 @@ export default function MovieSearch({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Search by English or Chinese title..."
+          placeholder={t("movie.search_placeholder")}
           className="flex-1 rounded-sm border border-charcoal/10 bg-cream px-3 py-2 text-sm text-charcoal placeholder:text-warm-gray/50 focus:border-royal-green/30 focus:outline-none"
           autoFocus
         />
@@ -137,7 +139,7 @@ export default function MovieSearch({
           disabled={searching || !query.trim()}
           className="rounded-sm bg-royal-green px-4 py-2 text-sm font-medium text-cream transition-colors hover:bg-royal-green/90 disabled:opacity-50"
         >
-          {searching ? "Searching..." : "Search"}
+          {searching ? t("common.searching") : t("common.search")}
         </button>
       </div>
 
@@ -186,7 +188,7 @@ export default function MovieSearch({
                   disabled={adding === key}
                   className="shrink-0 rounded-sm bg-royal-green/10 px-3 py-1.5 text-xs font-medium text-royal-green transition-colors hover:bg-royal-green/20 disabled:opacity-50"
                 >
-                  {adding === key ? "Adding..." : "Add"}
+                  {adding === key ? t("common.adding") : t("common.add")}
                 </button>
               </div>
             );
@@ -197,7 +199,7 @@ export default function MovieSearch({
       {/* Empty state after search */}
       {!searching && results.length === 0 && query && (
         <p className="mt-4 text-center text-xs text-warm-gray/60">
-          No results. Try a different title.
+          {t("movie.no_results")}
         </p>
       )}
     </div>

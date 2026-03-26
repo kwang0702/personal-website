@@ -5,10 +5,12 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useAdmin } from "@/components/admin-provider";
 import { useMusicPlayer } from "@/components/music-player-provider";
+import { useLanguage } from "@/components/language-provider";
 
 export default function PersistentPlayer() {
   const { current, isMinimized, isModalOpen, minimize, expand, stop } = useMusicPlayer();
   const { isAdmin, token } = useAdmin();
+  const { t } = useLanguage();
   const [removing, setRemoving] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -35,7 +37,7 @@ export default function PersistentPlayer() {
 
   const handleRemove = useCallback(async () => {
     if (!current) return;
-    if (!confirm(`Remove "${current.title}" from your collection?`)) return;
+    if (!confirm(t("music.confirm_remove", current.title))) return;
     setRemoving(true);
     const res = await fetch("/api/music", {
       method: "DELETE",
@@ -116,14 +118,14 @@ export default function PersistentPlayer() {
                     disabled={removing}
                     className="rounded-sm bg-burgundy/10 px-3 py-1.5 text-xs font-medium text-burgundy transition-colors hover:bg-burgundy/20 disabled:opacity-50"
                   >
-                    {removing ? "Removing..." : "Remove"}
+                    {removing ? t("common.removing") : t("common.remove")}
                   </button>
                 )}
                 <button
                   onClick={minimize}
                   className="rounded-sm p-1 text-charcoal-light transition-colors hover:text-royal-green"
-                  aria-label="Minimize player"
-                  title="Minimize — keep playing"
+                  aria-label={t("a11y.minimize_player")}
+                  title={t("player.minimize")}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3" />
@@ -132,8 +134,8 @@ export default function PersistentPlayer() {
                 <button
                   onClick={stop}
                   className="rounded-sm p-1 text-charcoal-light transition-colors hover:text-charcoal"
-                  aria-label="Close and stop"
-                  title="Close — stop music"
+                  aria-label={t("a11y.close_stop")}
+                  title={t("player.close_stop")}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M18 6L6 18M6 6l12 12" />
@@ -163,8 +165,8 @@ export default function PersistentPlayer() {
               <button
                 onClick={expand}
                 className="shrink-0 rounded-sm p-1.5 text-charcoal-light transition-colors hover:text-charcoal"
-                aria-label="Expand player"
-                title="Expand"
+                aria-label={t("a11y.expand_player")}
+                title={t("player.expand")}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
@@ -173,8 +175,8 @@ export default function PersistentPlayer() {
               <button
                 onClick={stop}
                 className="shrink-0 rounded-sm p-1.5 text-charcoal-light transition-colors hover:text-charcoal"
-                aria-label="Stop music"
-                title="Close"
+                aria-label={t("a11y.stop_music")}
+                title={t("player.close")}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M18 6L6 18M6 6l12 12" />

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useAdmin } from "@/components/admin-provider";
+import { useLanguage } from "@/components/language-provider";
 import type { Movie } from "@/data/movies";
 
 function slugify(title: string, year: number) {
@@ -19,6 +20,7 @@ export default function MovieModal({
   onRemove?: (movie: Movie) => void;
 }) {
   const { isAdmin, token } = useAdmin();
+  const { t } = useLanguage();
   const [review, setReview] = useState<string>("");
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
@@ -70,7 +72,7 @@ export default function MovieModal({
   }, [slug, token, draft]);
 
   const handleRemove = useCallback(async () => {
-    if (!confirm(`Remove "${movie.title}" from your collection?`)) return;
+    if (!confirm(t("movie.confirm_remove", movie.title))) return;
     setRemoving(true);
     const res = await fetch("/api/movies", {
       method: "DELETE",
@@ -139,14 +141,14 @@ export default function MovieModal({
                     }}
                     className="rounded-sm bg-royal-green/10 px-3 py-1.5 text-xs font-medium text-royal-green transition-colors hover:bg-royal-green/20"
                   >
-                    Edit
+                    {t("common.edit")}
                   </button>
                   <button
                     onClick={handleRemove}
                     disabled={removing}
                     className="rounded-sm bg-burgundy/10 px-3 py-1.5 text-xs font-medium text-burgundy transition-colors hover:bg-burgundy/20 disabled:opacity-50"
                   >
-                    {removing ? "Removing..." : "Remove"}
+                    {removing ? t("common.removing") : t("common.remove")}
                   </button>
                 </>
               )}
@@ -156,13 +158,13 @@ export default function MovieModal({
                   disabled={saving}
                   className="rounded-sm bg-royal-green px-3 py-1.5 text-xs font-medium text-cream transition-colors hover:bg-royal-green/90 disabled:opacity-50"
                 >
-                  {saving ? "Saving..." : "Save"}
+                  {saving ? t("common.saving") : t("common.save")}
                 </button>
               )}
               <button
                 onClick={onClose}
                 className="rounded-sm p-1 text-charcoal-light transition-colors hover:text-charcoal"
-                aria-label="Close"
+                aria-label={t("a11y.close")}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M18 6L6 18M6 6l12 12" />
@@ -174,12 +176,12 @@ export default function MovieModal({
           {/* Review content */}
           <div className="flex-1 overflow-y-auto px-6 py-6">
             {loading ? (
-              <p className="text-sm text-warm-gray">Loading...</p>
+              <p className="text-sm text-warm-gray">{t("common.loading")}</p>
             ) : editing ? (
               <textarea
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                placeholder="Write your thoughts on this film..."
+                placeholder={t("movie.review_placeholder")}
                 className="h-full w-full resize-none bg-transparent font-serif text-sm leading-relaxed text-charcoal placeholder:text-warm-gray/50 focus:outline-none"
                 autoFocus
               />
@@ -189,7 +191,7 @@ export default function MovieModal({
               </div>
             ) : (
               <p className="text-sm italic text-warm-gray/60">
-                No review yet.
+                {t("movie.no_review")}
               </p>
             )}
           </div>

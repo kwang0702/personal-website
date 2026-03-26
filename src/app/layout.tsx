@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Cormorant } from "next/font/google";
 import Header from "@/components/header";
 import { AdminProvider } from "@/components/admin-provider";
+import { LanguageProvider } from "@/components/language-provider";
 import { MusicPlayerProvider } from "@/components/music-player-provider";
 import PersistentPlayer from "@/components/persistent-player";
 import "./globals.css";
@@ -40,11 +41,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AdminProvider>
-          <MusicPlayerProvider>
-            <Header />
-            {children}
-            <PersistentPlayer />
-          </MusicPlayerProvider>
+          <LanguageProvider>
+            <MusicPlayerProvider>
+              <Header />
+              {children}
+              <PersistentPlayer />
+            </MusicPlayerProvider>
+          </LanguageProvider>
         </AdminProvider>
       </body>
     </html>
