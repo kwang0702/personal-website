@@ -6,12 +6,14 @@ export const metadata = {
   description: "Thoughts on cinema — what I watched, what stayed with me.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function ReviewsPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Page header */}
       <section className="mx-auto w-full max-w-6xl px-6 pt-24 pb-12">
-        <p className="mb-4 text-sm font-medium tracking-widest text-warm-gray uppercase">
+        <p className="mb-4 text-sm font-medium tracking-widest text-purple uppercase">
           Movie Reviews
         </p>
         <h1 className="max-w-xl font-serif text-4xl font-light leading-tight tracking-tight text-charcoal sm:text-5xl">
@@ -23,18 +25,18 @@ export default function ReviewsPage() {
       </section>
 
       <div className="mx-auto w-full max-w-6xl px-6">
-        <hr className="border-charcoal/8" />
+        <hr className="border-purple/15" />
       </div>
 
       {/* Movie grid */}
       <section className="mx-auto w-full max-w-6xl px-6 py-16">
-        <MovieGrid movies={movies} />
+        <MovieGrid initialMovies={movies} />
       </section>
 
       {/* Footer */}
       <footer className="mt-auto border-t border-charcoal/5 bg-cream-dark/30">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
-          <p className="font-serif text-sm text-warm-gray">K. Wang</p>
+          <p className="font-serif text-sm text-purple/60">K. Wang</p>
           <p className="text-xs text-warm-gray/60">A personal collection.</p>
         </div>
       </footer>

@@ -12,9 +12,11 @@ function slugify(title: string, year: number) {
 export default function MovieModal({
   movie,
   onClose,
+  onRemove,
 }: {
   movie: Movie;
   onClose: () => void;
+  onRemove?: (movie: Movie) => void;
 }) {
   const { isAdmin, token } = useAdmin();
   const [review, setReview] = useState<string>("");
@@ -22,6 +24,7 @@ export default function MovieModal({
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [removing, setRemoving] = useState(false);
 
   const slug = slugify(movie.title, movie.year);
 
@@ -65,6 +68,24 @@ export default function MovieModal({
     }
     setSaving(false);
   }, [slug, token, draft]);
+
+  const handleRemove = useCallback(async () => {
+    if (!confirm(`Remove "${movie.title}" from your collection?`)) return;
+    setRemoving(true);
+    const res = await fetch("/api/movies", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: movie.title, year: movie.year }),
+    });
+    if (res.ok) {
+      onRemove?.(movie);
+      onClose();
+    }
+    setRemoving(false);
+  }, [movie, token, onRemove, onClose]);
 
   return (
     <div
@@ -110,15 +131,24 @@ export default function MovieModal({
 
             <div className="flex items-center gap-2 shrink-0 ml-4">
               {isAdmin && !editing && (
-                <button
-                  onClick={() => {
-                    setDraft(review);
-                    setEditing(true);
-                  }}
-                  className="rounded-sm bg-royal-green/10 px-3 py-1.5 text-xs font-medium text-royal-green transition-colors hover:bg-royal-green/20"
-                >
-                  Edit
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setDraft(review);
+                      setEditing(true);
+                    }}
+                    className="rounded-sm bg-royal-green/10 px-3 py-1.5 text-xs font-medium text-royal-green transition-colors hover:bg-royal-green/20"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={handleRemove}
+                    disabled={removing}
+                    className="rounded-sm bg-burgundy/10 px-3 py-1.5 text-xs font-medium text-burgundy transition-colors hover:bg-burgundy/20 disabled:opacity-50"
+                  >
+                    {removing ? "Removing..." : "Remove"}
+                  </button>
+                </>
               )}
               {isAdmin && editing && (
                 <button

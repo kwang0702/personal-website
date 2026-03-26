@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Cormorant } from "next/font/google";
 import Header from "@/components/header";
 import { AdminProvider } from "@/components/admin-provider";
+import { MusicPlayerProvider } from "@/components/music-player-provider";
+import PersistentPlayer from "@/components/persistent-player";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,8 +40,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AdminProvider>
-          <Header />
-          {children}
+          <MusicPlayerProvider>
+            <Header />
+            {children}
+            <PersistentPlayer />
+          </MusicPlayerProvider>
         </AdminProvider>
       </body>
     </html>

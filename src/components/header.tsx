@@ -20,6 +20,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-cream/80 backdrop-blur-md border-b border-charcoal/5">
+      {/* Thin accent gradient bar at very top */}
+      <div className="accent-top-bar h-[2px] w-full" />
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         {/* Logo / Name — double-click to open admin login */}
         <AdminLogin />
