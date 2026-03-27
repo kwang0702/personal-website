@@ -172,6 +172,30 @@ const dict = {
   "admin.wrong_password": { en: "Incorrect password.", zh: "密码错误。" },
   "admin.login_button": { en: "Login", zh: "登录" },
 
+  // ── Fits page ──
+  "fits.label": { en: "Fits", zh: "穿搭" },
+  "fits.heading": { en: "What I wear.", zh: "我的穿搭。" },
+  "fits.description": {
+    en: "Personal style documented — outfit rotations and wardrobe experiments.",
+    zh: "个人风格记录——日常穿搭与衣橱实验。",
+  },
+  "fits.upload": { en: "Upload Fits", zh: "上传穿搭" },
+  "fits.no_fits": { en: "No fits yet.", zh: "暂无穿搭。" },
+
+  // ── Projects page ──
+  "projects.label": { en: "Projects", zh: "项目" },
+  "projects.heading": { en: "Things I've built.", zh: "我做过的东西。" },
+  "projects.description": {
+    en: "Open-source work, personal tools, and technical explorations.",
+    zh: "开源项目、个人工具与技术探索。",
+  },
+  "projects.view_source": { en: "Source", zh: "源码" },
+  "projects.view_live": { en: "Live", zh: "访问" },
+  "projects.last_updated": { en: "Updated $1", zh: "更新于 $1" },
+  "projects.no_projects": { en: "No projects yet.", zh: "暂无项目。" },
+  "projects.stars": { en: "$1 stars", zh: "$1 星" },
+  "projects.featured": { en: "Featured", zh: "精选" },
+
   // ── Accessibility ──
   "a11y.toggle_menu": { en: "Toggle menu", zh: "切换菜单" },
   "a11y.close": { en: "Close", zh: "关闭" },

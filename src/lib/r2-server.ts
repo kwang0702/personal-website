@@ -113,6 +113,40 @@ export async function putPhotoCatalog(photos: Photo[]): Promise<void> {
   );
 }
 
+// --- Fits Catalog ---
+
+export type FitPhoto = {
+  id: string;
+  src: string;
+  thumb: string;
+  alt: string;
+  orientation: "horizontal" | "vertical";
+  uploadedAt: string;
+};
+
+export async function getFitsCatalog(): Promise<FitPhoto[]> {
+  try {
+    const res = await R2.send(
+      new GetObjectCommand({ Bucket: BUCKET, Key: "fits/catalog.json" })
+    );
+    const text = await res.Body?.transformToString();
+    return text ? JSON.parse(text) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function putFitsCatalog(fits: FitPhoto[]): Promise<void> {
+  await R2.send(
+    new PutObjectCommand({
+      Bucket: BUCKET,
+      Key: "fits/catalog.json",
+      Body: JSON.stringify(fits, null, 2),
+      ContentType: "application/json",
+    })
+  );
+}
+
 // --- Binary Download / Upload / Delete ---
 
 export async function downloadFromR2(key: string): Promise<Buffer | null> {
